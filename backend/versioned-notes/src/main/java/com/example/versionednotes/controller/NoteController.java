@@ -2,13 +2,11 @@ package com.example.versionednotes.controller;
 
 import com.example.versionednotes.dto.CreateNoteRequest;
 import com.example.versionednotes.dto.NoteResponse;
+import com.example.versionednotes.dto.UpdateNoteRequest;
 import com.example.versionednotes.service.NoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/notes")
@@ -19,5 +17,9 @@ public class NoteController {
     @PostMapping
     public NoteResponse createNote(@RequestBody CreateNoteRequest createNoteRequest){
         return noteService.createNote(createNoteRequest);
+    }
+    @PostMapping("/{id}")
+    public NoteResponse updateNote(@RequestBody UpdateNoteRequest updateNoteRequest, @PathVariable Long id){
+        return noteService.updateNote(updateNoteRequest,id);
     }
 }

@@ -2,6 +2,7 @@ package com.example.versionednotes.service;
 
 import com.example.versionednotes.dto.CreateNoteRequest;
 import com.example.versionednotes.dto.NoteResponse;
+import com.example.versionednotes.dto.NoteVersionResponse;
 import com.example.versionednotes.dto.UpdateNoteRequest;
 import com.example.versionednotes.entity.Note;
 import com.example.versionednotes.entity.NoteVersion;
@@ -10,6 +11,7 @@ import com.example.versionednotes.repository.NoteVersionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -72,5 +74,14 @@ public class NoteService {
                 noteVersion.getContent(),
                 noteVersion.getVersionNumber()
         );
+    }
+
+    public List<NoteVersionResponse> getVersionHistory(Long id) {
+        List<NoteVersion> versionHistory=noteVersionRepository.getNoteVersionsOfANoteDescending(id);
+        List<NoteVersionResponse> ans=new ArrayList<>();
+        for (NoteVersion noteVersion : versionHistory) {
+            ans.add(new NoteVersionResponse(noteVersion.getVersionNumber(), noteVersion.getContent()));
+        }
+        return ans;
     }
 }

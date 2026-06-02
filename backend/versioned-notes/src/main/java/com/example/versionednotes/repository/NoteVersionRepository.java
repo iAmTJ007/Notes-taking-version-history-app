@@ -19,4 +19,9 @@ public interface NoteVersionRepository extends JpaRepository<NoteVersion,Long> {
         select n from NoteVersion n where n.note=:note and n.versionNumber=:versionNumber 
 """)
     NoteVersion getNoteVersionByVersionNumber(Note note, int versionNumber);
+    //return list of noteversions descending order by noteversions
+    @Query("""
+        select n from NoteVersion n where n.note.id=:nid order by n.versionNumber desc
+""")
+    List<NoteVersion> getNoteVersionsOfANoteDescending(Long nid);
 }

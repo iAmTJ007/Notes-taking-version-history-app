@@ -2,11 +2,15 @@ package com.example.versionednotes.controller;
 
 import com.example.versionednotes.dto.CreateNoteRequest;
 import com.example.versionednotes.dto.NoteResponse;
+import com.example.versionednotes.dto.NoteVersionResponse;
 import com.example.versionednotes.dto.UpdateNoteRequest;
 import com.example.versionednotes.service.NoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/notes")
@@ -25,5 +29,9 @@ public class NoteController {
     @GetMapping("/{id}")
     public NoteResponse getLatestNote(@PathVariable Long id){
         return noteService.getLatestNote(id);
+    }
+    @GetMapping("/{id}/versions")
+    public List<NoteVersionResponse> getVersionHistory(@PathVariable Long id){
+        return noteService.getVersionHistory(id);
     }
 }

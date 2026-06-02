@@ -22,4 +22,8 @@ public class NoteController {
     public NoteResponse updateNote(@RequestBody UpdateNoteRequest updateNoteRequest, @PathVariable Long id){
         return noteService.updateNote(updateNoteRequest,id);
     }
+    @GetMapping("/{id}")
+    public NoteResponse getLatestNote(@PathVariable Long id){
+        return noteService.getLatestNote(id);
+    }
 }

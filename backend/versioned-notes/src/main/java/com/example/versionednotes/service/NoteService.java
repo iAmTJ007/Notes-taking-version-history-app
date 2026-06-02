@@ -43,11 +43,7 @@ public class NoteService {
 
     public NoteResponse updateNote(UpdateNoteRequest updateNoteRequest, Long id) {
         Note note=noteRepository.findNoteById(id);
-        List<Integer> versions=noteVersionRepository.ListOfVersionNumbersForNote(id);
-        int maxVersion=0;
-        for (Integer version : versions) {
-            maxVersion = Math.max(maxVersion, version);
-        }
+        int maxVersion=noteVersionRepository.HighestVersionNumbersForNote(id);
         NoteVersion noteVersion=NoteVersion.builder()
                 .note(note)
                 .content(updateNoteRequest.getContent())
@@ -57,6 +53,19 @@ public class NoteService {
         noteVersionRepository.save(noteVersion);
 
         //return response now
+        return new NoteResponse(
+                id,
+                note.getTitle(),
+                noteVersion.getContent(),
+                noteVersion.getVersionNumber()
+        );
+    }
+
+    public NoteResponse getLatestNote(Long id) {
+        Note note =noteRepository.findNoteById(id);
+        int maxVersion=noteVersionRepository.HighestVersionNumbersForNote(id);
+        NoteVersion noteVersion=noteVersionRepository.getNoteVersionByVersionNumber(note,maxVersion);
+
         return new NoteResponse(
                 id,
                 note.getTitle(),

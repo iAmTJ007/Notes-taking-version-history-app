@@ -84,4 +84,11 @@ public class NoteService {
         }
         return ans;
     }
+
+    public NoteResponse restoreVersion(Long noteId, int versionNumber) {
+        Note note=noteRepository.findNoteById(noteId);
+        NoteVersion noteVersion=noteVersionRepository.getNoteVersionByVersionNumber(note,versionNumber);
+        UpdateNoteRequest updateNoteRequest=new UpdateNoteRequest(noteVersion.getContent());
+        return updateNote(updateNoteRequest,noteId);
+    }
 }

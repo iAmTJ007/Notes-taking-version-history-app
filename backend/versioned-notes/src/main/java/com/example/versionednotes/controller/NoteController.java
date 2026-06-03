@@ -34,4 +34,8 @@ public class NoteController {
     public List<NoteVersionResponse> getVersionHistory(@PathVariable Long id){
         return noteService.getVersionHistory(id);
     }
+    @PostMapping("/{noteId}/restore/{versionNumber}")
+    public NoteResponse restoreVersion(@PathVariable Long noteId,@PathVariable int versionNumber){
+        return noteService.restoreVersion(noteId,versionNumber);
+    }
 }

@@ -6,6 +6,7 @@ import com.example.versionednotes.dto.NoteVersionResponse;
 import com.example.versionednotes.dto.UpdateNoteRequest;
 import com.example.versionednotes.entity.Note;
 import com.example.versionednotes.entity.NoteVersion;
+import com.example.versionednotes.exception.NoteNotFoundException;
 import com.example.versionednotes.repository.NoteRepository;
 import com.example.versionednotes.repository.NoteVersionRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,7 @@ public class NoteService {
     }
 
     public NoteResponse updateNote(UpdateNoteRequest updateNoteRequest, Long id) {
-        Note note=noteRepository.findNoteById(id);
+        Note note=noteRepository.findNoteById(id).orElseThrow(()->new NoteNotFoundException("note not found with id "+id));
         int maxVersion=noteVersionRepository.HighestVersionNumbersForNote(id);
         NoteVersion noteVersion=NoteVersion.builder()
                 .note(note)
@@ -64,7 +65,7 @@ public class NoteService {
     }
 
     public NoteResponse getLatestNote(Long id) {
-        Note note =noteRepository.findNoteById(id);
+        Note note =noteRepository.findNoteById(id).orElseThrow(()->new NoteNotFoundException("note not found with id "+id));
         int maxVersion=noteVersionRepository.HighestVersionNumbersForNote(id);
         NoteVersion noteVersion=noteVersionRepository.getNoteVersionByVersionNumber(note,maxVersion);
 
@@ -86,7 +87,7 @@ public class NoteService {
     }
 
     public NoteResponse restoreVersion(Long noteId, int versionNumber) {
-        Note note=noteRepository.findNoteById(noteId);
+        Note note=noteRepository.findNoteById(noteId).orElseThrow(()->new NoteNotFoundException("note not found with id "+noteId));
         NoteVersion noteVersion=noteVersionRepository.getNoteVersionByVersionNumber(note,versionNumber);
         UpdateNoteRequest updateNoteRequest=new UpdateNoteRequest(noteVersion.getContent());
         return updateNote(updateNoteRequest,noteId);

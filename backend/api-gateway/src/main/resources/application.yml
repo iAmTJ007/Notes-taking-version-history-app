@@ -4,14 +4,14 @@ server:
 spring:
   cloud:
     gateway:
-      routes:
-        - id: auth-service
-          uri: http://localhost:8081
-          predicates:
-            - Path=/auth/**
+      mvc:
+        routes:
+          - id: auth-service
+            uri: http://localhost:8081
+            predicates:
+              - Path=/auth/**
 
-        - id: notes-service
-          uri: http://localhost:8082
-          predicates:
-            - Path=/notes/**
-
+          - id: notes-service
+            uri: http://localhost:8082
+            predicates:
+              - Path=/notes/**

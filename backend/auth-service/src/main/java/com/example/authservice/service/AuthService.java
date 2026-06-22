@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
     public String register(RegisterRequest registerRequest) {
         User user=User.builder()
@@ -31,6 +31,6 @@ public class AuthService {
         if(!passwordEncoder.matches(loginRequest.getPassword(),user.getPassword())){
             throw new RuntimeException("password incorrect");
         }
-        return jwtService.generateToken(loginRequest.getUsername());
+        return new AuthResponse(jwtService.generateToken(loginRequest.getUsername()));
     }
 }
